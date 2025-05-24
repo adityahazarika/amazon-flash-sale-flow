@@ -48,3 +48,5 @@
    - POST /refund/:orderId → manual refund trigger (optional)
 
 ```
+
+Notes - if after 30 mins system marks it failed but still after 1 hr the payment gets confirmed toh hum uss payment se related order status dekhenge, if orderStatus is 4(rejected due to payment timeout) then hum uss user ko utna amount refund kar tenge.
