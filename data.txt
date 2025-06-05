@@ -1,0 +1,99 @@
+🔨 Development Roadmap
+Step 1: Design DynamoDB Schemas
+orders table
+orderId (PK)
+userId
+productId
+orderStatus (1-5)
+paymentStatus
+createdAt, updatedAt
+paymentTime (nullable)
+inventory table
+productId (PK)
+stockCount
+lockedCount
+
+
+Step 2: Basic Backend Setup (Node.js + Express)
+POST /order – place order + lock inventory + create order record
+GET /order/:id/status – fetch order status
+
+
+Step 3: Simulate Payment Logic
+Simulate delayed payment with setTimeout
+Allow manual payment success/fail for testing
+
+
+Step 4: Add AWS SQS Integration
+On successful payment → push message to SQS queue (orderId)
+Setup AWS IAM, SQS queue, and SDK config
+
+
+Step 5: AWS Lambda (Consumer)
+Triggered by SQS
+Fetch order → mark status processing → simulate processing → update to completed
+
+
+Step 6: Cron Job for Timeout Orders
+Use node-cron (local dev) or AWS Lambda + CloudWatch Events (prod)
+Run every 5 mins → mark old pending orders as timeout (status = 4)
+Release inventory
+
+
+Step 7: Simulate Payment Gateway Callback
+POST /webhook/payment
+Input: orderId + paymentStatus
+If status = success:
+If orderStatus = 1 → push to SQS
+If orderStatus = 4 → initiate refund
+
+
+Step 8: Add Refund Simulation
+POST /refund/:orderId → mock refund logic
+Update order with refundStatus
+
+
+Step 9: Frontend (Optional)
+Simple React app to place order, poll status, and simulate payment
+
+
+🧪 Testing Scenarios
+
+Scenario	Expected Behavior
+Payment within 30 min	Order gets completed via Lambda
+No payment	Order auto-cancelled by cron after 30 mins
+Late payment	Refund triggered automatically
+Failed payment	Order marked failed (status = 5)
+
+
+
+
+
+
+🟡 1. orders Table
+Field	Type	Description
+orderId	String (PK)	Unique ID for the order (UUID)
+userId	String	ID of the user placing the order
+productId	String	Which product was ordered
+orderStatus	Number	Status code (1 = pending, 2 = processing, etc.)
+paymentStatus	String	pending, success, failed
+paymentTime	ISO String	Timestamp of payment success (nullable)
+createdAt	ISO String	Order creation time
+updatedAt	ISO String	Last update time
+refundStatus	String	none, initiated, completed
+
+
+🟡 2. inventory Table
+Field	Type	Description
+productId	String (PK)	Unique ID for product
+stockCount	Number	Current available stock count
+lockedCount	Number	Temporarily locked count during payment
+
+
+✅ Sample orderStatus Codes
+Code	Meaning
+1	Pending (payment not yet confirmed)
+2	Processing (SQS picked it)
+3	Completed
+4	Rejected due to payment timeout
+5	Payment Failed
