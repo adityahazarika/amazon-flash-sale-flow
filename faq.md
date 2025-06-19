@@ -20,3 +20,8 @@ Isliye:
 
 Frontend: bas payment confirm → send to SQS
 Baaki sab background me Lambda worker handle kare
+
+
+2. Order statuses
+
+<img width="814" alt="image" src="https://github.com/user-attachments/assets/87dcce5a-8abf-414e-87ac-be8a0dcc46d5" />
