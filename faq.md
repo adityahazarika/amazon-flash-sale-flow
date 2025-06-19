@@ -1,16 +1,9 @@
 1. Why to use SQS - 
 
 
-Long Answer — Compare karo:
+![image](https://github.com/user-attachments/assets/07a7b686-bcde-47c0-9d4d-91377d1446e9)
 
-Scenario	❌ Without SQS	✅ With SQS
-Order placement time	Slow — backend waits for all steps	Fast — payment done, baaki background me
-Payment success ke baad	Lambda call karni padegi inline	Queue me message push → Lambda triggers
-Order processing logic	Tightly coupled in same request	Decoupled — worker (Lambda) handles it
-Failures / retries	Manual try-catch needed	SQS auto-retry & DLQ possible
-Spikes (e.g., Flash sale)	System overload	Queue absorbs burst, Lambda scales
-Lambda concurrency	N/A	Auto scaling possible
-Microservices ke beech data	Hard to sync	Message queue = common medium
+
 💡 Ek Example soch:
 
 🛒 Amazon Flash Sale:
