@@ -42,6 +42,8 @@
               ├── If orderStatus = 1 (pending) → push to SQS
               ├── If orderStatus = 4 (timed out) → initiate refund
               └── If already processed → ignore or notify
+         --- On Payment failed:
+            ----  Mark it as failed and restore inventory
 
 [8] Optional APIs
    - GET /order/:id/status → check current status

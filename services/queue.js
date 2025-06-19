@@ -1,13 +1,17 @@
 import AWS from "aws-sdk";
-import dotenv from "dotenv";
-dotenv.config();
-
+let region = process.env.AWS_REGION
 const sqs = new AWS.SQS({ region: process.env.AWS_REGION });
 
-export const sendToQueue = async (payload) => {
+export async function sendToQueue(payload) {
   const params = {
     QueueUrl: process.env.QUEUE_URL,
-    MessageBody: JSON.stringify(payload),
+    MessageBody: JSON.stringify(payload)
   };
-  return sqs.sendMessage(params).promise();
-};
+  try {
+    await sqs.sendMessage(params).promise();
+    console.log(`📨 Sent to SQS: ${JSON.stringify(payload)}`);
+  } catch (err) {
+    console.error("❌ Failed to push to SQS:", err);
+    throw err;
+  }
+}
