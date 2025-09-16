@@ -4,6 +4,7 @@
 OUR Project request per second capacity- 
 
 Chal ab dekh le realistically humara SQS + Lambda + DynamoDB kitna load handle karega:
+
 🔹 1. SQS Throughput
 Standard Queue (jo hum use kar rahe hain): practically unlimited throughput.
 AWS guarantee karta hai ki tu tens of thousands of messages per second bhej sakta hai.
