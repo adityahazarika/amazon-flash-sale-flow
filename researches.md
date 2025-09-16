@@ -1,6 +1,8 @@
 ![image](https://github.com/user-attachments/assets/bb9c761f-d315-4ada-b767-cb052a546167)
 
 
+OUR Project request per second capacity- 
+
 Chal ab dekh le realistically humara SQS + Lambda + DynamoDB kitna load handle karega:
 🔹 1. SQS Throughput
 Standard Queue (jo hum use kar rahe hain): practically unlimited throughput.
