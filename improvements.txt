@@ -1,0 +1,1 @@
+1. Proccess the order even if some items are out of stock from the final cart, and refund the price later for out of stock products

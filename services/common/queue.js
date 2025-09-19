@@ -9,9 +9,9 @@ export async function sendToQueue(payload) {
   };
   try {
     await sqs.sendMessage(params).promise();
-    console.log(`📨 Sent to SQS: ${JSON.stringify(payload)}`);
+    console.log(`Sent to SQS: ${JSON.stringify(payload)}`);
   } catch (err) {
-    console.error("❌ Failed to push to SQS:", err);
+    console.error("Failed to push to SQS:", err);
     throw err;
   }
 }
