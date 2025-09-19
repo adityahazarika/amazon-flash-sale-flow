@@ -15,11 +15,12 @@ router.post("/", async (req, res) => {
   try {
     // Step 1: Inventory check & reserve
     let checkInventory = await orderService.checkInventory(items)
-    if (checkInventory !== true) {
+    if (checkInventory.msg !== "Success") {
       return res.status(400).json({
-        message: checkInventory,
+        message: checkInventory.msg,
       });
     }
+    total = checkInventory.total;
     await orderService.reserveItemsInInventory(items)
 
     const order = {
@@ -34,7 +35,7 @@ router.post("/", async (req, res) => {
     await orderService.saveOrder(order);
 
     //Simulate Payment and save payment transaction details in one of your table
-    const outcomes = ["success"];
+    const outcomes = ["pending"];
     const randomStatus = outcomes[Math.floor(Math.random() * outcomes.length)];
     // Simulate Payments ends
 

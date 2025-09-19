@@ -43,11 +43,16 @@ export async function checkInventory(items) {
             let cartItem = items.find((data) => data.productId == result.Responses.inventory[i].productId);
 
             if (result.Responses.inventory[i].quantity < cartItem.qty) {
-                return `Product ${cartItem.productId} is out of stock`
+                return {
+                "msg":`Product ${cartItem.productId} is out of stock`
+                }
             }
             total = total + (result.Responses.inventory[i].price * cartItem.qty)
         }
-        return true
+        return {
+            "msg":"Success",
+            "total":total
+        }
     }
     catch (err) {
         throw err
