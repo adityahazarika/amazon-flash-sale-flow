@@ -44,7 +44,7 @@ export async function checkInventory(items) {
 
             if (result.Responses.inventory[i].quantity < cartItem.qty) {
                 return {
-                "msg":`Product ${cartItem.productId} is out of stock`
+                    "msg":`Product ${cartItem.productId} is out of stock`
                 }
             }
             total = total + (result.Responses.inventory[i].price * cartItem.qty)
@@ -109,10 +109,11 @@ export async function processOrder(orderId, items, status) {
                 ExpressionAttributeValues: { ":s": 2 }
             }).promise();
 
-            queue.sendToQueue({ orderId })
+            await queue.sendToQueue({ orderId })
+            console.log("Order Success")
         }
 
-        if (status === "failed") {
+        else if (status === "failed") {
             // Rollback reservation
             let updatedInventoryList = items.map((data) => ({
                 Update: {
@@ -137,8 +138,11 @@ export async function processOrder(orderId, items, status) {
                 ExpressionAttributeNames: { "#status": "status" },
                 ExpressionAttributeValues: { ":s": 5 }
             }).promise();
+            console.log("Order Failed")
+        } else {
+            // If pending → do nothing now, cron will handle
+            console.log("Order Pending")
         }
-        // If pending → do nothing now, cron will handle
     }
     catch (err) {
         throw err

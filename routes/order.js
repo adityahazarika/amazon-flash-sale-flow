@@ -35,7 +35,7 @@ router.post("/", async (req, res) => {
     await orderService.saveOrder(order);
 
     //Simulate Payment and save payment transaction details in one of your table
-    const outcomes = ["pending"];
+    const outcomes = ["pending", "success", "failed"];
     const randomStatus = outcomes[Math.floor(Math.random() * outcomes.length)];
     // Simulate Payments ends
 
@@ -46,7 +46,7 @@ router.post("/", async (req, res) => {
       orderId,
       paymentStatus: randomStatus
     });
-  } 
+  }
   catch (err) {
     console.error("Error in /order:", err);
     return res.status(500).json({ error: "Internal error while placing order" });

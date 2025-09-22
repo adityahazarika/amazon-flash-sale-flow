@@ -1,0 +1,22 @@
+config:
+  target: "http://localhost:3000"   # yaha tera Express /order API ka URL dalna
+  payload:
+    path: 'test.csv'
+    fields:
+      - 'Set1'
+      - 'Set2'
+  phases:
+    - duration: 3  # test duration in seconds
+      arrivalRate: 10   # requests per second (low load)
+scenarios:
+  - name: "Create Order Test"
+    flow:
+      - post:
+          url: "/order"
+          json:
+            userId: "user{{ $randomNumber(1,1000) }}"
+            items:
+              - productId: '{{ Set1 }}'
+                qty: 1
+              - productId: '{{ Set2 }}'
+                qty: 2
