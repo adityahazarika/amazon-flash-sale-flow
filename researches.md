@@ -37,3 +37,8 @@ Startups / mid-size ecommerce ko utna hi chahiye hota hai.
 ⚡ So bhai, answer:
 👉 Hamara system 5k–10k orders per second handle kar sakta hai (thoda tuning karke).
 Aur agar tera project bas demo purpose ke liye hai → 500/sec bhi bahut impressive hai.
+
+
+
+<img width="1470" height="880" alt="Screenshot 2025-09-24 at 7 15 48 PM" src="https://github.com/user-attachments/assets/fc9a1283-ce16-474f-af17-8ee5934ef374" />
+
