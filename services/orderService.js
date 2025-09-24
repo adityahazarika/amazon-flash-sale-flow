@@ -1,5 +1,7 @@
 import AWS from "aws-sdk";
-import * as queue from "../services/common/queue.js";
+import * as queue from "./common/queue.js";
+import { log } from "./common/logger.js";
+
 const dynamo = new AWS.DynamoDB.DocumentClient({ region: process.env.AWS_REGION });
 
 export const fetchOrderById = async (orderId) => {
@@ -44,14 +46,14 @@ export async function checkInventory(items) {
 
             if (result.Responses.inventory[i].quantity < cartItem.qty) {
                 return {
-                    "msg":`Product ${cartItem.productId} is out of stock`
+                    "msg": `Product ${cartItem.productId} is out of stock`
                 }
             }
             total = total + (result.Responses.inventory[i].price * cartItem.qty)
         }
         return {
-            "msg":"Success",
-            "total":total
+            "msg": "Success",
+            "total": total
         }
     }
     catch (err) {
@@ -110,7 +112,7 @@ export async function processOrder(orderId, items, status) {
             }).promise();
 
             await queue.sendToQueue({ orderId })
-            console.log("Order Success")
+            log(`${orderId} - Order Success`)
         }
 
         else if (status === "failed") {
@@ -138,10 +140,10 @@ export async function processOrder(orderId, items, status) {
                 ExpressionAttributeNames: { "#status": "status" },
                 ExpressionAttributeValues: { ":s": 5 }
             }).promise();
-            console.log("Order Failed")
+            log(`${orderId} - Order Failed`)
         } else {
             // If pending → do nothing now, cron will handle
-            console.log("Order Pending")
+            log(`${orderId} - Order Pending`)
         }
     }
     catch (err) {
